@@ -12,13 +12,13 @@ leet = {
 finalword = []
 
 def lenguaje(word):
-    
     for i in word:
         if i in leet: # Miramos si i se encuentra en el diccionario.
             i = leet[i] # Aqui hacemos que i sea el valor que representa en el diccionario.
             finalword.append(i) # Agregamos i a la lista.
         else:
             finalword.append(i)
+    
 
 
 
