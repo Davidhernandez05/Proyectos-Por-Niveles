@@ -1,0 +1,12 @@
+/WEB/Angular
+/WEB/React
+.DS_Store
+WEB/.DS_Store
+/WEB/JS/PrimerosPasosJS/07-ejercicios2/node_modules
+/WEB/JS/PrimerosPasosJS/07-ejercicios2/package-lock.json
+/WEB/JS/PrimerosPasosJS/07-ejercicios2/package.json
+.DS_Store
+WEB/.DS_Store
+WEB/.DS_Store
+WEB/Backend/Go/10-frameworkGin/go.sum
+WEB/Backend/Go/10-frameworkGin/go.mod
