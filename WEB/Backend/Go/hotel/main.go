@@ -21,5 +21,8 @@ func main()  {
 	api.EliminarHuesped(r)
 	api.ActualizarHusped(r)
 
+	// Habitaciones:
+	api.ListarHabitaciones(r)
+
 	r.Run(":8080")
 }
