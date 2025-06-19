@@ -27,3 +27,21 @@ func ListarHabitaciones(r *gin.Engine)  {
 		c.JSON(http.StatusOK, gin.H{"Correcto": habitaciones})
 	})
 }
+
+func AgregarHabitacion(r *gin.Engine) {
+	r.POST("/habitacion", func(c *gin.Context) {
+		var nuevaHabitacion models.Habitacion
+
+		if err := c.BindJSON(&nuevaHabitacion); err != nil {
+			log.Print("Error en archivo JSON", err)
+			return
+		}
+		if nuevaHabitacion.Tipo == "" {
+			log.Println("Tienes que agregar el tipo de habitación.")
+			return
+		}
+
+		db.DB.Preload("Reservas").Create(&nuevaHabitacion)
+		c.JSON(http.StatusOK, gin.H{"Se agrego la habitación correctamente": nuevaHabitacion})
+	})
+}
