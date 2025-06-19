@@ -24,6 +24,7 @@ func main()  {
 	// Habitaciones:
 	api.ListarHabitaciones(r)
 	api.AgregarHabitacion(r)
+	api.EliminarHabitaciones(r)
 
 	r.Run(":8080")
 }
