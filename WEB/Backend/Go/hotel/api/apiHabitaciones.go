@@ -60,7 +60,7 @@ func EliminarHabitaciones(r *gin.Engine)  {
 			return
 		}
 		if result.RowsAffected == 0 {
-			mensaje = fmt.Sprintf("No se encontro ninguna habitacion: %d", id)
+			mensaje = fmt.Sprintf("No se encontro ninguna habitacion con el id: %d", id)
 			c.JSON(http.StatusBadRequest, gin.H{"Error": mensaje})
 			return
 		}
@@ -68,4 +68,28 @@ func EliminarHabitaciones(r *gin.Engine)  {
 		mensaje = fmt.Sprintf("Se elimino correctamente la habitacion: %d", id)
 		c.JSON(http.StatusOK, gin.H{"Correcto": mensaje})
 	})
+}
+func BuscarHabitacion(r *gin.Engine) {
+	r.GET("/habitacion/:id", func(c *gin.Context) {
+		var habitaciones models.Habitacion
+		id := utils.TransformarID(c.Param("id"))
+		var mensaje string
+		result := db.DB.Preload("Reservas").First(&habitaciones, id)
+
+		if result.Error != nil {
+			mensaje = "Error al buscar el id."
+			c.JSON(http.StatusBadRequest, mensaje)
+			return
+		}
+
+		if result.RowsAffected == 0 {
+			mensaje = fmt.Sprintf("No se encontro ninguna habitacion con el id: %d", id)
+			c.JSON(http.StatusBadRequest, gin.H{"Error": mensaje})
+			return
+		}
+
+		mensaje = fmt.Sprintf("Habitación: %d", id)
+		c.JSON(http.StatusOK, gin.H{mensaje : habitaciones})
+
+	})	
 }
