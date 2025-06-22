@@ -28,5 +28,8 @@ func main()  {
 	api.BuscarHabitacion(r)
 	api.ModificarHabitacion(r)
 
+	// Reservas:
+	api.ListarTodasLasReservar(r)
+
 	r.Run(":8080")
 }
