@@ -93,3 +93,38 @@ func BuscarHabitacion(r *gin.Engine) {
 
 	})	
 }
+
+func ModificarHabitacion(r *gin.Engine) {
+	r.PUT("/habitacion/:id", func(c *gin.Context) {
+		var habitacionActualizada models.Habitacion
+		var habitacion models.Habitacion
+		id := utils.TransformarID(c.Param("id"))
+		var mensaje string
+
+		result := db.DB.First(&habitacion, id)
+		if result.Error != nil {
+			mensaje = fmt.Sprint("No fue posible encontrar el ID. ", result.Error)
+			c.JSON(http.StatusBadRequest, mensaje)
+			return
+		}
+
+		if err := c.BindJSON(&habitacionActualizada); err != nil {
+			mensaje = fmt.Sprint("Json no valido. ", err)
+			c.JSON(http.StatusBadRequest, mensaje)
+			return
+		}
+
+		habitacion.Tipo = habitacionActualizada.Tipo
+		habitacion.PrecioNoche = habitacionActualizada.PrecioNoche
+
+		if err := db.DB.Save(&habitacion).Error; err != nil {
+			mensaje = fmt.Sprint("No fue posible guardar la nueva habitacion. ", err)
+			c.JSON(http.StatusBadRequest, mensaje)
+			return
+		}
+
+		mensaje = fmt.Sprintf("Habitacion: %d modificada", habitacion.Numero)
+		c.JSON(http.StatusOK, gin.H{mensaje : &habitacion})
+		
+	})
+}
