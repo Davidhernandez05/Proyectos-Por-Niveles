@@ -12,7 +12,7 @@ import (
 func ListarTodasLasReservar(r *gin.Engine) {
 	r.GET("/reservas", func(c *gin.Context) {
 		var reservas []models.Reserva
-		result := db.DB.Find(&reservas)
+		result := db.DB.Preload("Huesped").Preload("Habitacion").Find(&reservas)
 
 		if result.Error != nil {
 			log.Println("No es posible listar todas las reservas error: ", result.Error)
@@ -26,4 +26,25 @@ func ListarTodasLasReservar(r *gin.Engine) {
 
 		c.JSON(http.StatusOK, gin.H{"Reservas": reservas})
 	})
+}
+
+func AgregarReservaNueva(r *gin.Engine) {
+	r.POST("/reserva", func(c *gin.Context) {
+		var nuevaReserva models.Reserva
+
+		if err := c.BindJSON(&nuevaReserva); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"Error": "Error en el archivo JSON"})
+			return
+		}
+
+		result := db.DB.Create(&nuevaReserva)
+
+		if result.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"Error": "No fue posible crear la reservación."})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"Se creo la reservacion exitosamente": nuevaReserva})
+	})
+
 }
