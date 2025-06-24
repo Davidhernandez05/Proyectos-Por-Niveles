@@ -31,6 +31,7 @@ func main()  {
 	// Reservas:
 	api.ListarTodasLasReservar(r)
 	api.AgregarReservaNueva(r)
+	api.EliminarReservacion(r)
 
 	r.Run(":8080")
 }

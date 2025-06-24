@@ -1,11 +1,13 @@
 package api
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/Davidhernandez05/Proyectos-Por-Niveles/tree/main/WEB/Backend/Go/hotel/db"
 	"github.com/Davidhernandez05/Proyectos-Por-Niveles/tree/main/WEB/Backend/Go/hotel/models"
+	"github.com/Davidhernandez05/Proyectos-Por-Niveles/tree/main/WEB/Backend/Go/hotel/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -47,4 +49,27 @@ func AgregarReservaNueva(r *gin.Engine) {
 		c.JSON(http.StatusOK, gin.H{"Se creo la reservacion exitosamente": nuevaReserva})
 	})
 
+}
+
+func EliminarReservacion(r *gin.Engine)  {
+	r.DELETE("/reserva/:id", func(c *gin.Context) {
+		var reservaciones models.Reserva
+		id := utils.TransformarID(c.Param("id"))
+		var mensaje string
+		result := db.DB.Delete(reservaciones, id)
+
+		if result.Error != nil {
+			c.JSON(http.StatusBadRequest, "No es posible eliminar el id.")
+			return
+		}
+
+		if result.RowsAffected == 0 {
+			mensaje = fmt.Sprintf("No se encontro ningun dato con el id: %d.", id)
+			c.JSON(http.StatusBadRequest, gin.H{"Error": mensaje})
+			return
+		}
+
+		mensaje = fmt.Sprintf("Se elimino correctamente el id: %d.", id)
+		c.JSON(http.StatusOK, gin.H{"Exitoso": mensaje})
+	})
 }
