@@ -12,7 +12,7 @@ import (
 )
 
 func ListarTodasLasReservar(r *gin.Engine) {
-	r.GET("/reservas", func(c *gin.Context) {
+	r.GET("/reservacion", func(c *gin.Context) {
 		var reservas []models.Reserva
 		result := db.DB.Preload("Huesped").Preload("Habitacion").Find(&reservas)
 
@@ -31,7 +31,7 @@ func ListarTodasLasReservar(r *gin.Engine) {
 }
 
 func AgregarReservaNueva(r *gin.Engine) {
-	r.POST("/reserva", func(c *gin.Context) {
+	r.POST("/reservacion", func(c *gin.Context) {
 		var nuevaReserva models.Reserva
 
 		if err := c.BindJSON(&nuevaReserva); err != nil {
@@ -52,7 +52,7 @@ func AgregarReservaNueva(r *gin.Engine) {
 }
 
 func EliminarReservacion(r *gin.Engine)  {
-	r.DELETE("/reserva/:id", func(c *gin.Context) {
+	r.DELETE("/reservacion/:id", func(c *gin.Context) {
 		var reservaciones models.Reserva
 		id := utils.TransformarID(c.Param("id"))
 		var mensaje string
@@ -71,5 +71,30 @@ func EliminarReservacion(r *gin.Engine)  {
 
 		mensaje = fmt.Sprintf("Se elimino correctamente el id: %d.", id)
 		c.JSON(http.StatusOK, gin.H{"Exitoso": mensaje})
+	})
+}
+
+func BuscarReservacion(r *gin.Engine)  {
+	r.PUT("/reservacion/:id", func(c *gin.Context) {
+		var reservaciones models.Reserva
+		id := utils.TransformarID(c.Param("id"))
+		var mensaje string
+
+		result := db.DB.Preload("Huesped").Preload("Habitacion").First(&reservaciones, id)
+
+		if result.RowsAffected == 0 {
+			mensaje = fmt.Sprintf("No se encontro ninguna reservacion con el id: %d", id)
+			c.JSON(http.StatusBadRequest, mensaje)
+			return
+		}
+
+		if result.Error != nil {
+			mensaje = fmt.Sprint("Se genero un error al buscar la reservacion: ", result.Error)
+			c.JSON(http.StatusBadRequest, mensaje)
+			return
+		}
+
+		mensaje = fmt.Sprintf("Se encontro la siguiente reservacion con el id: %d", id)
+		c.JSON(http.StatusOK, gin.H{mensaje : reservaciones})
 	})
 }
