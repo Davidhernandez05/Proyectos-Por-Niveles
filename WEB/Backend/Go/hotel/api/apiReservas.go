@@ -12,7 +12,7 @@ import (
 )
 
 func ListarTodasLasReservar(r *gin.Engine) {
-	r.GET("/reservacion", func(c *gin.Context) {
+	r.GET("/reservaciones", func(c *gin.Context) {
 		var reservas []models.Reserva
 		result := db.DB.Preload("Huesped").Preload("Habitacion").Find(&reservas)
 
@@ -75,7 +75,7 @@ func EliminarReservacion(r *gin.Engine)  {
 }
 
 func BuscarReservacion(r *gin.Engine)  {
-	r.PUT("/reservacion/:id", func(c *gin.Context) {
+	r.GET("/reservacion/:id", func(c *gin.Context) {
 		var reservaciones models.Reserva
 		id := utils.TransformarID(c.Param("id"))
 		var mensaje string
@@ -96,5 +96,48 @@ func BuscarReservacion(r *gin.Engine)  {
 
 		mensaje = fmt.Sprintf("Se encontro la siguiente reservacion con el id: %d", id)
 		c.JSON(http.StatusOK, gin.H{mensaje : reservaciones})
+	})
+}
+
+func ModificarReservacion(r *gin.Engine) {
+	r.PUT("/reservacion/:id", func(c *gin.Context) {
+		var reservaciones models.Reserva
+		var reservacionModificada models.Reserva
+		var mensaje string
+		id := utils.TransformarID(c.Param("id"))
+
+		result := db.DB.Preload("Huesped").Preload("Habitacion").First(&reservaciones, id)
+
+		if result.Error != nil {
+			mensaje = fmt.Sprint("Se genero un error al buscar el id indicado: ", result.Error)
+			c.JSON(http.StatusBadRequest, mensaje)
+			return
+		}
+
+		if result.RowsAffected == 0 {
+			mensaje = fmt.Sprint("No es encontro ninguna reservacion con el codigo: ", id)
+			c.JSON(http.StatusBadRequest, mensaje)
+			return
+		}
+
+		if err := c.BindJSON(&reservacionModificada); err != nil {
+			c.JSON(http.StatusBadRequest, "Error en el archivo JSON.")
+		}
+
+		reservaciones.FechaIngreso = reservacionModificada.FechaIngreso
+		reservaciones.FechaSalida = reservacionModificada.FechaSalida
+		reservaciones.PrecioTotal = reservacionModificada.PrecioTotal
+		reservaciones.HabitacionID = reservacionModificada.HabitacionID
+		reservaciones.Disponibilidad = reservacionModificada.Disponibilidad
+
+		guardarCambios := db.DB.Save(&reservaciones)
+
+		if guardarCambios.Error != nil {
+			mensaje = fmt.Sprint("Se genero un error al guardar los cambios: ", guardarCambios.Error)
+			c.JSON(http.StatusBadRequest, mensaje)
+			return
+		}
+
+		c.JSON(http.StatusOK, reservaciones)
 	})
 }

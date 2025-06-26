@@ -33,6 +33,7 @@ func main()  {
 	api.AgregarReservaNueva(r)
 	api.EliminarReservacion(r)
 	api.BuscarReservacion(r)
+	api.ModificarReservacion(r)
 
 	r.Run(":8080")
 }
