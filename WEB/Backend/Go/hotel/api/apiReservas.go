@@ -33,18 +33,32 @@ func ListarTodasLasReservar(r *gin.Engine) {
 func AgregarReservaNueva(r *gin.Engine) {
 	r.POST("/reservacion", func(c *gin.Context) {
 		var nuevaReserva models.Reserva
+		var mensaje string
 
 		if err := c.BindJSON(&nuevaReserva); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"Error": "Error en el archivo JSON"})
+			mensaje = fmt.Sprint("Error en el archivo JSON", err)
+			c.JSON(http.StatusBadRequest, gin.H{"Error": mensaje})
 			return
 		}
 
-		result := db.DB.Create(&nuevaReserva)
-
-		if result.Error != nil {
+		if err := db.DB.Create(&nuevaReserva).Error; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"Error": "No fue posible crear la reservación."})
 			return
 		}
+
+		// Nos trae los datos completos con preload los recarga nuevamente.
+		if err := db.DB.Preload("Huesped").Preload("Habitacion").First(&nuevaReserva, &nuevaReserva.ID).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"Error": "No fue posible cargar la información conpleta."})
+			return
+		}
+
+		// Calculamos el precio:
+		dias := nuevaReserva.FechaSalida.Sub(nuevaReserva.FechaIngreso).Hours() / 24
+		nuevaReserva.PrecioTotal = dias * nuevaReserva.Habitacion.PrecioNoche
+
+		//Actualiza la reserva con el precio total.
+		//Tener en cuenta MODEL: indica a GORM a qué tabla (modelo) se le aplicará la actualización.
+		db.DB.Model(&nuevaReserva).Update("precio_total", nuevaReserva.PrecioTotal)
 
 		c.JSON(http.StatusOK, gin.H{"Se creo la reservacion exitosamente": nuevaReserva})
 	})
@@ -124,9 +138,11 @@ func ModificarReservacion(r *gin.Engine) {
 			c.JSON(http.StatusBadRequest, "Error en el archivo JSON.")
 		}
 
+		dias := reservacionModificada.FechaSalida.Sub(reservacionModificada.FechaIngreso).Hours() / 24
+
 		reservaciones.FechaIngreso = reservacionModificada.FechaIngreso
 		reservaciones.FechaSalida = reservacionModificada.FechaSalida
-		reservaciones.PrecioTotal = reservacionModificada.PrecioTotal
+		reservaciones.PrecioTotal = dias * reservaciones.Habitacion.PrecioNoche
 		reservaciones.HabitacionID = reservacionModificada.HabitacionID
 		reservaciones.Disponibilidad = reservacionModificada.Disponibilidad
 
@@ -138,6 +154,7 @@ func ModificarReservacion(r *gin.Engine) {
 			return
 		}
 
-		c.JSON(http.StatusOK, reservaciones)
+		mensaje = fmt.Sprintf("Se actualizo correctamente la reservacion numero de dias reservados: %v", dias)
+		c.JSON(http.StatusOK, gin.H{mensaje : reservaciones})
 	})
 }
