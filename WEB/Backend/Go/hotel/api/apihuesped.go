@@ -31,6 +31,7 @@ func ListarTodosLosHuespedes(r *gin.Engine) {
 
 func AgregarHusped(r *gin.Engine)  {
 	r.POST("/huesped", func(c *gin.Context) {
+		var mensaje string
 		var nuevoHusped models.Huesped
 
 		if err := c.BindJSON(&nuevoHusped); err != nil {
@@ -42,7 +43,11 @@ func AgregarHusped(r *gin.Engine)  {
 			return
 		}
 
-		db.DB.Create(&nuevoHusped)
+		if err := db.DB.Create(&nuevoHusped).Error; err != nil {
+			mensaje = fmt.Sprint("Se genero un error al momento de crear el nuevo huesped: ", err)
+			c.JSON(http.StatusBadRequest, gin.H{"Error": mensaje})
+			return
+		}
 		c.JSON(http.StatusOK, gin.H{"Se creo el Husped exitosamente": nuevoHusped})
 	})
 }
