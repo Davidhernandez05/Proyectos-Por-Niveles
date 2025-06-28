@@ -58,7 +58,7 @@ func AgregarReservaNueva(r *gin.Engine) {
 
 		//Actualiza la reserva con el precio total.
 		//Tener en cuenta MODEL: indica a GORM a qué tabla (modelo) se le aplicará la actualización.
-		db.DB.Model(&nuevaReserva).Update("precio_total", nuevaReserva.PrecioTotal)
+		db.DB.Model(&nuevaReserva).Update("precio_total", nuevaReserva.PrecioTotal) // precio_total -> Es el nombre de la columna en la base de datos.
 
 		c.JSON(http.StatusOK, gin.H{"Se creo la reservacion exitosamente": nuevaReserva})
 	})
