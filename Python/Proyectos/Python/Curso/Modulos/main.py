@@ -10,3 +10,17 @@ from miModulo import *
 #print(miModulo.holamundo("David Hernandez"))
 #print(holamundo("Miguel"))
 print(holamundo("David"))
+
+# Modulo de fecha:
+import datetime
+print(datetime.date.today())
+
+fecha_completa = datetime.datetime.now()
+print(fecha_completa)
+print(fecha_completa.year)
+
+fecha_personalizada = fecha_completa.strftime("%d/%m/%Y, %H:%M:%S") #Nos permite formatear la fecha segun lo que necesitemos.
+print(fecha_personalizada)
+
+print(datetime.datetime.now().timestamp())
+print(datetime.datetime.now().time())
