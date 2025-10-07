@@ -6,7 +6,21 @@ ruta = str(pathlib.Path().absolute()) + "/ficheros.txt" #Buscamos la ruta absolu
 archivo = open(ruta, "+a")
 
 # Escribir en un archivo.
-archivo.write("Soy un texto ingresado desde python.")
+archivo.write("Soy un texto ingresado desde python. \n")
 
 # Cerrar archivo:
 archivo.close()
+
+# Abrir un archivo
+ruta = str(pathlib.Path().absolute()) + "/ficheros.txt" #Buscamos la ruta absoluta.
+archivo_lectura = open(ruta, "+r")
+
+# leer contenido:
+contenido = archivo_lectura.read()
+print(contenido)
+
+# Leer contenido y guardarlo en una lista:
+lista = archivo_lectura.readlines()
+archivo_lectura.close()
+
+print(lista)
