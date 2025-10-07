@@ -1,5 +1,5 @@
 from io import open
-import pathlib
+import pathlib, shutil
 
 # Abrir Archivo:
 ruta = str(pathlib.Path().absolute()) + "/ficheros.txt" #Buscamos la ruta absoluta.
@@ -24,3 +24,9 @@ lista = archivo_lectura.readlines()
 archivo_lectura.close()
 
 print(lista)
+
+# copiar un archivo:
+ruta_original = str(pathlib.Path().absolute()) + "/ficheros.txt"
+ruta_nueva = str(pathlib.Path().absolute()) + "/ficheros_copiado.txt"
+
+shutil.copyfile(ruta_original, ruta_nueva)
