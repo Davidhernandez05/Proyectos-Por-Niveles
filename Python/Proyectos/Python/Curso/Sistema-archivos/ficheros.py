@@ -26,7 +26,16 @@ archivo_lectura.close()
 print(lista)
 
 # copiar un archivo:
+'''
 ruta_original = str(pathlib.Path().absolute()) + "/ficheros.txt"
 ruta_nueva = str(pathlib.Path().absolute()) + "/ficheros_copiado.txt"
 
 shutil.copyfile(ruta_original, ruta_nueva)
+'''
+
+# Mover un archivo:
+ruta_original = str(pathlib.Path().absolute()) + "/ficheros.txt"
+ruta_nueva = str(pathlib.Path().absolute()) + "/ficheros_copiado.txt"
+
+shutil.move(ruta_original, ruta_nueva)
+
