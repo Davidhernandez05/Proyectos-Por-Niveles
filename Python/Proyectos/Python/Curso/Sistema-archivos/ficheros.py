@@ -1,5 +1,5 @@
 from io import open
-import pathlib, shutil
+import pathlib, shutil, os
 
 # Abrir Archivo:
 ruta = str(pathlib.Path().absolute()) + "/ficheros.txt" #Buscamos la ruta absoluta.
@@ -34,8 +34,25 @@ shutil.copyfile(ruta_original, ruta_nueva)
 '''
 
 # Mover un archivo:
+'''
 ruta_original = str(pathlib.Path().absolute()) + "/ficheros.txt"
 ruta_nueva = str(pathlib.Path().absolute()) + "/ficheros_copiado.txt"
 
 shutil.move(ruta_original, ruta_nueva)
+'''
 
+#Eliminar un archivo.
+ruta_original = str(pathlib.Path().absolute()) + "/ficheros.txt"
+os.remove(ruta_original)
+
+#Comprobar si un archivo existe.
+import os.path
+# print(os.path.abspath("./")) -> Nos da la ruta de un archivo.
+
+ruta_comprobar = "/Users/davidhernandez/Desarrollo/variosLenguajes/Python/Proyectos/Python/Curso/Sistema-archivos/ficheros.py"
+
+if os.path.isfile(ruta_comprobar):
+  print("El archivo existe")
+
+else:
+  print("El archivo no existe.")
