@@ -37,11 +37,14 @@ class Coche:
 # Fin de la definicion de la clase.
 
 # Instanciar la clase:
+
+print("COCHE 1:")
+
 auto = Coche();
 print(auto)
 print(auto.marca, auto.color)
 
-print("Velocidad actual: ",auto.getVelocidad)
+print("Velocidad actual: ",auto.getVelocidad())
 
 auto.acelerar()
 auto.acelerar()
@@ -54,3 +57,12 @@ print("Velocidad nueva: ", auto.getVelocidad())
 print("El auto es de color: ", auto.getColor())
 auto.setColor("blanco")
 print("El auto es de color: ", auto.getColor())
+
+
+# Crear mas objetos:
+
+print("COCHE 2:")
+
+coche2 = Coche()
+coche2.setColor("Amarillo")
+print(coche2.marca, coche2.modelo, coche2.getColor())
