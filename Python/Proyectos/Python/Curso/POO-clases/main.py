@@ -53,9 +53,10 @@ auto.acelerar()
 auto.frenar()
 
 print("Velocidad nueva: ", auto.getVelocidad())
-
 print("El auto es de color: ", auto.getColor())
+
 auto.setColor("blanco")
+
 print("El auto es de color: ", auto.getColor())
 
 
