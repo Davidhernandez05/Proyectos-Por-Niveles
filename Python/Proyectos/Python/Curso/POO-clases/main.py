@@ -20,6 +20,12 @@ class Coche:
     self.velocidad -= 10
     print("El auto esta frenando.")
 
+  def setColor(self, newcolor):
+    self.color = newcolor
+
+  def getColor(self):
+    return self.color
+
   def getVelocidad(self):
     if self.velocidad <= 0:
       return 0
@@ -44,3 +50,7 @@ auto.acelerar()
 auto.frenar()
 
 print("Velocidad nueva: ", auto.getVelocidad())
+
+print("El auto es de color: ", auto.getColor())
+auto.setColor("blanco")
+print("El auto es de color: ", auto.getColor())
