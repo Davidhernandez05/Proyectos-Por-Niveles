@@ -8,6 +8,9 @@ print(carro.coche())
 
 if type(carro) == Coche:
   print("Es un objeto de tipo coche.")
-
 else:
   print("No es un objero de tipo coche.")
+
+
+# Visibilidad -> Publicos y provados.
+carro.getPribado()
