@@ -12,10 +12,18 @@ print(persona.dormir())
 
 print("-------------------------------")
 
-informatio = clases.Informatico()
+informatico = clases.Informatico()
 
-informatio.setNombre("Andres")
-informatio.setApellidos("Martinez")
+informatico.setNombre("Andres")
+informatico.setApellidos("Martinez")
 
-print(f"El informatico es: {informatio.getNombre()} {informatio.getApellidos()}.")
-print(informatio.getLenguajes())
+print(f"El informatico es: {informatico.getNombre()} {informatico.getApellidos()}.")
+print(informatico.getLenguajes())
+print(informatico.caminar())
+
+print("-------------------------------")
+
+tecnico = clases.TecnicoRedes()
+tecnico.setNombre("Many")
+print(f"Tecnico: {tecnico.getNombre()}, Nivel de Experto: {tecnico.auditarRedes}")
+print(f"Lenguajes: {tecnico.getLenguajes()}")

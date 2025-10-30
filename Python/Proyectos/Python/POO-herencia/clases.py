@@ -44,3 +44,14 @@ class Informatico(Persona):
   
   def reparar(self):
     return "He reparado tu ordenador."
+  
+
+class TecnicoRedes(Informatico):
+
+  def __init__(self):
+    super().__init__() # -> Hace que ingresemos el init de la clase padre y se ejecute.
+    self.auditarRedes = "Experto"
+    self.experienciaRedes = 15
+
+  def auditoria(self):
+    return "Estoy auditando una red en este momento."
