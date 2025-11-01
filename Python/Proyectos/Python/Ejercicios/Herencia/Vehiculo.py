@@ -4,14 +4,14 @@ class Vehiculo:
     self.modelo = modelo
     self.year = year
 
-  def MostrarInfo(self):
+  def mostrar_info(self):
     return f"Marca: {self.marca}.\nModelo: {self.modelo}\nAño: {self.year}"
   
   def encender(self):
-    print("El vehiculo esta encendido.")
+    print("El vehiculo está encendido.")
   
   def apagar(self):
-    print("El vehiculo esta apago.")
+    print("El vehiculo está apago.")
 
 
 class Auto(Vehiculo):
@@ -19,10 +19,10 @@ class Auto(Vehiculo):
     super().__init__(marca, modelo, year)
     self.numeroPuertas = numeroPuertas
 
-  def tocarVocina(self):
+  def tocar_bocina(self):
     print("Beep, Beep!.")
 
-  def MostrarInfo(self):
+  def mostrar_info(self):
     return f"Marca: {self.marca}.\nModelo: {self.modelo}.\nAño: {self.year}.\nNumero de puertas: {self.numeroPuertas}."
 
 class Motocicleta(Vehiculo):
@@ -33,5 +33,6 @@ class Motocicleta(Vehiculo):
   def caballito(self):
     print(f"La motocicleta {self.modelo}, esta haciendo caballito.")
 
-  def MostrarInfo(self):
-    return f"Marca: {self.marca}.\nModelo: {self.modelo}.\nTipo de moto: {self.tipo}.\nAño: {self.year}."
+  def mostrar_info(self):
+    base = super().mostrar_info()
+    return f"{base}\nTipo de moto: {self.tipo}."
