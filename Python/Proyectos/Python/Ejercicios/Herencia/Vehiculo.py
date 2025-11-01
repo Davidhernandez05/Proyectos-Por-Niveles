@@ -24,3 +24,14 @@ class Auto(Vehiculo):
 
   def MostrarInfo(self):
     return f"Marca: {self.marca}.\nModelo: {self.modelo}.\nAño: {self.year}.\nNumero de puertas: {self.numeroPuertas}."
+
+class Motocicleta(Vehiculo):
+  def __init__(self, marca, modelo, year, tipo):
+    super().__init__(marca, modelo, year)
+    self.tipo = tipo
+
+  def caballito(self):
+    print(f"La motocicleta {self.modelo}, esta haciendo caballito.")
+
+  def MostrarInfo(self):
+    return f"Marca: {self.marca}.\nModelo: {self.modelo}.\nTipo de moto: {self.tipo}.\nAño: {self.year}."
